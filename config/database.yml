@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: greengiant_development
+
+test:
+  <<: *default
+  database: greengiant_test
+
+production:
+  <<: *default
+  database: greengiant_production
+  username: greengiant
+  password: <%= ENV['GREENGIANT_DATABASE_PASSWORD'] %>

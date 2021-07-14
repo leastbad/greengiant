@@ -1,0 +1,100 @@
+<div id="app">
+  <section class="emojis">
+    <img ref="heart" class="heart emoji" data-color="#b75fef" data-class="purple" src="https://assets.codepen.io/16327/purple-heart-emoji-violet-emoticon-png-favpng-At0uFYs3d61fTTzKHWzixJEfj.jpeg" />
+    <img ref="socks" class="socks emoji" data-color="#51da85" data-class="green" src="https://assets.codepen.io/16327/socks.gif" />
+  </section>
+
+  <div class="interface">    
+      <button class="button" :class="{ playing : paused }" @click="togglePlayback">
+        <svg aria-hidden="true" class="button__svg" fill="#828080" xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24">
+          <g class="pause">
+            <path d="M10,17a1,1,0,0,1-1-1V8a1,1,0,0,1,2,0v8A1,1,0,0,1,10,17Z" />
+            <path d="M14,17a1,1,0,0,1-1-1V8a1,1,0,0,1,2,0v8A1,1,0,0,1,14,17Z" />
+          </g>
+          <path class="play" d="M16.57,11.32,10.31,7.15a.8.8,0,0,0-1.25.68v8.34a.81.81,0,0,0,1.25.68l6.26-4.17A.81.81,0,0,0,16.57,11.32Z" />
+        </svg>
+        <span class="button__text">pause</span>
+      </button>
+    
+    <div class="timeline" ref="timeline">
+      <div class="timeline__item" v-for="(item,index) in timelineItems" :style="item.style" :class="item.class" :key="item.class">
+        <span></span>
+      </div>
+    </div>
+    <div class="times">
+      <div v-for="(ms,index) in roundedMilliseconds" :class="{ label: index === labelPosition * 10 }" :key="index">
+        <span>{{ index / 10 }}</span>    
+      </div>
+    </div>
+    <div class="scrubber" ref="scrubber"></div>
+  </div>
+  
+  <div class="code-container">
+    <span class="code">tl.to(".socks", { x: {{ endX }}, duration: 1 }<span :class="{ 'hide-comma' : hidePosition }">,&nbsp;</span></span>
+    <span class="code position-text" :class="hidePosition ? 'hide-position' : ''">{{ formattedPosition }}</span>
+    <span class="code">);</span>
+  </div>
+  
+  <div class="code-container mobile">
+    <div>tl.to(".socks", {</div>
+    <div>&nbsp;&nbsp;x: {{ endX }},</div>
+    <div>&nbsp;&nbsp;duration: 1</div>
+    <div>}<span :class="hidePosition ? 'hide-comma' : ''">,&nbsp;</span><span class="position-text" :class="{ 'hide-position' : hidePosition }">{{ formattedPosition }}</span>);</div>
+  </div>
+  
+  <div class="options">
+    
+    <div class="options__container flow reference">
+      <h3>Reference Point</h3>
+
+        <label class="radio radio--simple">
+          <input :class="{ 'checked': 'timelineStart' === referencePoint }" type="radio" value="timelineStart" v-model="referencePoint"><span class="box"></span><span class="info">Start of timeline</span>
+        </label>
+ 
+      
+
+        <label class="radio radio--simple">
+          <input :class="{ 'checked': 'timelineEnd' === referencePoint }" type="radio" value="timelineEnd" v-model="referencePoint"><span class="box"></span><span class="info">End of timeline</span>
+        </label>
+
+
+
+        <label class="radio">
+          <input :class="{ 'checked': 'previousStart' === referencePoint }" type="radio" value="previousStart" v-model="referencePoint"><span class="box">&lt;</span><span class="info">Start of <span class="purpleTxt">previous animation</span></span>
+        </label>
+
+      
+
+        <label class="radio">
+          <input :class="{ 'checked': 'previousEnd' === referencePoint }" type="radio" value="previousEnd" v-model="referencePoint"> <span class="box">&gt;</span><span class="info">End of <span class="purpleTxt">previous animation</span></span>
+        </label>
+
+      
+
+        <label class="radio">
+          <input v-bind:class="{ 'checked': 'label' === referencePoint }" type="radio" value="label" v-model="referencePoint"> <span class="box box--label">myLabel</span><span class="info">Label</span>
+        </label>
+   
+    </div>
+    
+    <div class="options__container offsets">
+      <h3>Offset</h3>
+      
+      <div class="offset" :class="{ 'offset--previous': useRecent && usePrevious }">
+      <input class="number" @wheel="" v-model="offsetNumber" type="number" :min="-range" :max="range" :step="offsetType === 'percent' ? 5 : 0.5">
+      <label class="offset__type" :class="{ 'checked': 'seconds' === offsetType }">
+        <input type="radio" value="seconds" v-model="offsetType"> Seconds
+      </label>
+      <label class="offset__type" :class="{ 'checked': 'percent' === offsetType }">
+        <input type="radio" value="percent" v-model="offsetType" :disabled="referencePoint === 'timelineStart'"> Percent
+      </label>  
+      </div>
+      <div v-if="usePrevious">
+        <label class="radio radio--simple">
+          <input type="checkbox" :class="{ 'checked': useRecent }"  v-model="useRecent"><span class="box"></span><span class="info">Use percentage of <span class="purpleTxt"> previous animation</span></span>
+        </label>
+      </div>
+    </div>
+    
+  </div>
+</div>

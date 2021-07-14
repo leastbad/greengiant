@@ -1,0 +1,503 @@
+@import url('https://fonts.googleapis.com/css2?family=Signika+Negative:wght@400;600&display=swap');
+$fa-font-path: '../../../node_modules/@fortawesome/fontawesome-free/webfonts';
+@import '@fortawesome/fontawesome-free/scss/fontawesome';
+@import '@fortawesome/fontawesome-free/scss/solid';
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+$mobile: 800px;
+
+:root {
+  --number-size: 1.2rem;
+}
+
+.green {
+  background-color: #51da85;
+}
+
+.purple {
+  background-color: #b75fef;
+}
+
+body {
+  padding: 0.5rem;
+  font-family: 'Signika Negative', sans-serif, Arial;
+  background: hsl(252deg 3% 97%);
+  min-height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+h3 {
+  font-size: 28px;
+  margin-bottom: 0.5rem;
+  color: #282828;
+}
+
+#app {
+  opacity: 0;
+}
+
+.flow > * + * {
+  margin-top: 0.5rem;
+}
+
+.interface {
+  // opacity:0;
+  position: relative;
+  padding: 3rem 2rem 3rem;
+  background-color: #fff;
+  border-radius: 10px;
+  width: clamp(300px, 80vw, 900px);
+  box-shadow: 0 19px 28px rgba(0, 0, 0, 0.05), 0 15px 8px rgba(0, 0, 0, 0.04);
+
+  &__title {
+    position: relative;
+    color: var(--color-mid);
+    display: block;
+    width: 100%;
+    padding-bottom: 1rem;
+    padding-left: 3px;
+    display: flex;
+    flex-direction: row;
+    h1 {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+.timeline > * + * {
+  margin-top: 0.5rem;
+}
+
+.timeline__item {
+  width: 2px;
+  margin: 0.75rem;
+  border-radius: 999px;
+  box-sizing: border-box;
+  text-align: center;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timeline__item.purple span {
+  display: none;
+  font-size: 0.85rem;
+}
+
+.scrubber {
+  position: absolute;
+  bottom: 3rem;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 99px;
+  background-color: #e55555;
+  z-index: 1;
+}
+
+.button__svg {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-top: 2px;
+  pointer-events: none;
+}
+
+.button {
+  position: absolute;
+  font-size: 0;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  top: 10px;
+  left: 1rem;
+  cursor: pointer;
+}
+
+.button.playing {
+  .pause {
+    opacity: 1;
+  }
+  .play {
+    opacity: 0;
+  }
+}
+
+.button:not(.playing) {
+  .pause {
+    opacity: 0;
+  }
+  .play {
+    opacity: 1;
+  }
+}
+
+.times {
+  width: calc(100% - 20px);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  z-index: 999;
+  margin-left: 10px;
+}
+
+.times > * {
+  position: relative;
+}
+
+.times div {
+  margin-top: 1rem;
+  width: 0.5px;
+  height: 5px;
+  background-color: #00000070;
+  position: relative;
+}
+
+.times span {
+  display: none;
+  font-size: var(--number-size);
+}
+
+.times div:nth-child(5n + 1) {
+  height: 10px;
+  background-color: #00000090;
+}
+
+.times div:nth-child(5n + 1) span {
+  display: block;
+  font-family: 'nunito', sans-serif, Arial;
+  color: #555;
+  text-align: center;
+  position: absolute;
+  width: auto;
+  height: 1rem;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.times .label {
+  height: 10px;
+  background-color: #00000090;
+}
+
+.times .label span {
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  top: 1rem;
+  left: 0%;
+  transform: translateX(-0.5rem);
+  z-index: 2;
+}
+
+.times .label:after {
+  font-size: 0.85rem;
+  text-align: center;
+  content: 'myLabel';
+  position: absolute;
+  background-size: 70%;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  width: 60px;
+  height: 60px;
+  left: -30px;
+  top: 400%;
+  z-index: 9;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' id='Capa_1' x='0' y='0' version='1.1' viewBox='0 0 344.406 344.406' xml:space='preserve'%3E%3Cpath fill='%232191FB' d='M243.243 0h-142.08c-13.767.044-24.916 11.193-24.96 24.96v298.8c0 21 21.04 31.2 37.48 5l58.52-93.28 58.52 93.28c16.44 26.2 37.48 15.96 37.48-5V24.96C268.159 11.193 257.01.044 243.243 0z'/%3E%3C/svg%3E");
+}
+
+.emojis {
+  display: flex;
+  margin-bottom: 0.5rem;
+  z-index: -1;
+  pointer-events: none;
+  flex-direction: column;
+}
+
+.emoji {
+  margin: 1rem;
+  width: 3rem;
+  height: 3rem;
+  object-fit: contain;
+}
+
+.heart {
+  width: 3rem;
+  height: 2.5rem;
+  object-position: 85%;
+}
+
+#options {
+  margin-top: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .input {
+    margin-top: 2rem;
+    font-size: 1.3rem;
+    border: none;
+    outline: none;
+    padding: 1rem 0.5rem;
+    border-bottom: solid 4px #51da85;
+  }
+}
+
+.radios {
+  display: flex;
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+}
+
+.radio .box {
+  width: 50px;
+  background-color: white;
+  border-radius: 15px;
+  cursor: pointer;
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: solid 3px #ddd;
+  font-size: 0.8rem;
+}
+
+.radio .info {
+  display: inline-block;
+  margin-left: 1rem;
+}
+
+.radio:nth-of-type(5) .checked ~ .box {
+  border-color: #2191fb;
+  background-color: #2191fb;
+  color: #fff;
+}
+
+.checked ~ .box {
+  border-color: #b75fef;
+  background-color: #b75fef;
+  color: #fff;
+}
+
+.radio input {
+  position: absolute;
+  opacity: 0;
+}
+
+.radio--simple .box {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border-radius: 99%;
+  border-color: #ddd;
+}
+
+.radio--simple .box:after {
+  position: absolute;
+  content: '';
+  width: 75%;
+  height: 75%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 99%;
+  opacity: 0;
+  background-color: #fff;
+}
+
+.radio--simple .checked ~ .box {
+  border-color: #51da85;
+  background-color: #51da85;
+}
+.radio--simple .checked ~ .box:after {
+  opacity: 1;
+}
+
+.offset {
+  background-color: white;
+  border-radius: 15px;
+  cursor: pointer;
+  display: flex;
+  border: solid 3px #51da85;
+  font-size: 1rem;
+  display: inline-flex;
+  overflow: hidden;
+
+  input:not(.number) {
+    opacity: 0;
+    position: absolute;
+  }
+
+  .offset__type {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .offset__type.checked {
+    background-color: #51da85;
+  }
+}
+
+.offsets .radio--simple {
+  margin-top: 1rem;
+}
+
+.offsets .radio--simple .checked ~ .box {
+  border-color: #b75fef;
+  background-color: #b75fef;
+}
+
+.offset--previous {
+  .offset__type.checked {
+    background-color: #b75fef;
+  }
+}
+
+.offset--previous {
+  border-color: #b75fef;
+}
+
+.text {
+  width: 100%;
+}
+.label {
+  display: block;
+  margin-top: 1rem;
+}
+
+.number {
+  border: none;
+  padding: 0.75rem 1rem;
+  padding-right: 0.2rem;
+  font-size: 1.3rem;
+  border-radius: 20px;
+  outline: none;
+  font-size: 1.2rem;
+}
+
+.helperText {
+  opacity: 0;
+  min-height: 135px;
+  text-align: center;
+}
+
+.greenTxt {
+  color: #25b961;
+  font-weight: bold;
+}
+.purpleTxt {
+  color: #b75fef;
+  font-weight: bold;
+}
+.blueTxt {
+  color: #2191fb;
+  font-weight: bold;
+}
+
+.invalid {
+  height: 2rem;
+  font-size: 0.85rem;
+}
+
+footer {
+  display: flex;
+}
+
+.code {
+  opacity: 0.6;
+}
+
+.position-text {
+  font-size: 1.4rem;
+  opacity: 1;
+  margin: 0.1em;
+  margin-bottom: 0.2em;
+  padding: 5px 2px;
+  padding-bottom: 0;
+  font-weight: 600;
+}
+
+.code-container {
+  font-family: 'Fira Code', monospace;
+  margin-top: 3rem;
+  font-size: 1.1rem;
+  padding: 1rem;
+  align-items: center;
+  line-height: 2em;
+}
+
+.code-container:not(.mobile) {
+  display: flex;
+  justify-content: center;
+  white-space: pre;
+}
+
+.code-container.mobile {
+  display: none;
+}
+
+.code-container.mobile .position-text {
+  display: inline-block;
+}
+
+.code {
+  white-space: pre;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+}
+
+.options__container {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.hide-comma {
+  display: none;
+}
+
+.code-container .position-text.hide-position {
+  margin-left: 0;
+  display: none;
+}
+
+@media (max-width: $mobile) {
+  .options__container {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .code-container:not(.mobile) {
+    display: none;
+  }
+
+  .code-container.mobile {
+    display: block;
+  }
+
+  .position-text {
+    font-size: 1.3rem;
+  }
+}
